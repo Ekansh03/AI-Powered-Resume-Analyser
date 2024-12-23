@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Check Resume Score</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-gray-100">
+    <!-- Navbar -->
+    <nav class="bg-blue-500 p-4">
+      <div class="container mx-auto flex justify-between items-center">
+        <a href="{{ url_for('dashboard') }}" class="text-white text-2xl">
+          Dashboard
+        </a>
+        <div class="space-x-4">
+          <a href="{{ url_for('check_score') }}" class="text-white"
+            >Check Resume Score</a
+          >
+          <a href="{{ url_for('logout') }}" class="text-white">Logout</a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Content -->
+    <div class="container mx-auto p-8">
+      <!-- Display error message if there is one -->
+      {% if error_message %}
+      <div class="alert alert-danger bg-red-500 text-white p-4 rounded mb-4">
+        <p>{{ error_message }}</p>
+      </div>
+      {% endif %}
+
+      <h2 class="text-3xl font-bold mb-4">Upload Your Resume for Scoring</h2>
+
+      <form
+        method="POST"
+        enctype="multipart/form-data"
+        class="bg-white p-6 rounded shadow"
+      >
+        <label for="resume" class="block text-lg mb-2"
+          >Upload Resume (PDF):</label
+        >
+        <input
+          type="file"
+          name="resume"
+          id="resume"
+          accept="application/pdf"
+          required
+          class="border p-2 mb-4 w-full"
+        />
+        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">
+          Upload
+        </button>
+      </form>
+
+      {% if resume_score %}
+      <!-- Display the calculated resume score -->
+      <div class="result bg-white p-6 rounded shadow mt-8">
+        <h3 class="text-2xl font-bold">Your Resume Score:</h3>
+        <p class="text-lg">{{ resume_score }}</p>
+      </div>
+      {% endif %}
+    </div>
+  </body>
+</html>

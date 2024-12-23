@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-gray-100">
+    <!-- Navbar -->
+    <nav class="bg-blue-500 p-4">
+      <div class="container mx-auto flex justify-between items-center">
+        <a href="{{ url_for('dashboard') }}" class="text-white text-2xl"
+          >Dashboard</a
+        >
+        <div class="space-x-4">
+          <a href="{{ url_for('check_score') }}" class="text-white"
+            >Check Resume Score</a
+          >
+          <a href="{{ url_for('logout') }}" class="text-white">Logout</a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Content -->
+    <div class="container mx-auto p-8">
+      <h1 class="text-3xl font-bold mb-4">Job Insights</h1>
+
+      {% if job_insights %}
+      <div class="bg-white p-6 rounded shadow">
+        <h2 class="text-xl mb-2">Latest Job Market Trends</h2>
+        <ul class="space-y-4">
+          {% for insight in job_insights %}
+          <li class="border-b pb-4">
+            <strong class="text-lg">{{ insight.title }}</strong><br />
+            <strong>Company:</strong> {{ insight.company }}<br />
+            <strong>Description:</strong> {{ insight.description }}<br />
+            <a
+              href="{{ insight.redirect_url }}"
+              target="_blank"
+              class="text-blue-500"
+            >
+              View Job
+            </a>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+      {% else %}
+      <p class="text-gray-500">No job insights available at the moment.</p>
+      {% endif %}
+    </div>
+  </body>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>OpenAI Chat</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-gray-100">
+    <!-- Navbar -->
+    <nav class="bg-blue-500 p-4">
+      <div class="container mx-auto flex justify-between items-center">
+        <a href="{{ url_for('dashboard') }}" class="text-white text-2xl">
+          Dashboard
+        </a>
+        <div class="space-x-4">
+          <a href="{{ url_for('check_score') }}" class="text-white"
+            >Check Resume Score</a
+          >
+          <a href="{{ url_for('logout') }}" class="text-white">Logout</a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Content -->
+    <div class="container mx-auto p-8">
+      <h1 class="text-3xl font-bold mb-6">Ask OpenAI</h1>
+
+      <form id="openai-form" class="bg-white p-6 rounded shadow mb-8">
+        <label for="user-input" class="block text-lg mb-2"
+          >Ask a question:</label
+        >
+        <textarea
+          id="user-input"
+          class="border p-2 mb-4 w-full h-40"
+          placeholder="Type your question here..."
+          required
+        ></textarea>
+        <button type="submit" class="bg-blue-500 text-white px-6 py-2 rounded">
+          Ask OpenAI
+        </button>
+      </form>
+
+      <!-- AI Response -->
+      <div id="response-section" class="bg-white p-6 rounded shadow">
+        <h2 class="text-xl font-bold mb-4">AI Response:</h2>
+        <p id="ai-response" class="text-lg text-gray-700">
+          Your AI response will appear here.
+        </p>
+      </div>
+    </div>
+
+    <script>
+      document
+        .getElementById("openai-form")
+        .addEventListener("submit", async function (e) {
+          e.preventDefault();
+
+          const userInput = document.getElementById("user-input").value;
+          const aiResponse = document.getElementById("ai-response");
+
+          // Simulating AI response with a delay
+          aiResponse.textContent = "Thinking...";
+
+          try {
+            // Make an API call to OpenAI (adjust URL and headers based on your backend setup)
+            const response = await fetch("/ask-openai", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ prompt: userInput }),
+            });
+
+            const data = await response.json();
+            aiResponse.textContent =
+              data.ai_response || "Error: No response from AI.";
+          } catch (error) {
+            aiResponse.textContent = "Error: Could not fetch AI response.";
+          }
+        });
+    </script>
+  </body>
+</html>

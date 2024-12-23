@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}Resume Analyzer{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Tailwind CDN -->
+
+    <!-- Custom CSS -->
+    <style>
+      .chat-button {
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        background-color: #10b981;
+        border-radius: 50%;
+        width: 60px;
+        height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+        z-index: 1000;
+      }
+      .chat-button:hover {
+        transform: scale(1.1);
+      }
+
+      /* Icon styles */
+      .chat-button svg {
+        fill: white;
+      }
+
+      .chat-modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        z-index: 1001;
+      }
+      .chat-modal.active {
+        display: flex;
+      }
+      .chat-modal .modal-content {
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        max-width: 600px;
+        width: 100%;
+      }
+      .chat-modal textarea {
+        width: 100%;
+        height: 150px;
+        border-radius: 5px;
+        padding: 10px;
+      }
+      .chat-modal .modal-header {
+        font-size: 1.2rem;
+        font-weight: bold;
+      }
+      .chat-modal .modal-footer {
+        display: flex;
+        justify-content: flex-end;
+      }
+      .chat-modal .modal-footer button {
+        background-color: #10b981;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      .chat-modal .modal-footer button:hover {
+        background-color: #059669;
+      }
+    </style>
+  </head>
+
+  <body class="bg-gray-100">
+    <!-- Navbar -->
+    <nav class="navbar flex justify-between items-center bg-teal-500 p-4">
+      <a href="/" class="text-white font-semibold text-xl">Resume Analyzer</a>
+      <div class="flex space-x-4">
+        <a href="/dashboard" class="text-white">Dashboard</a>
+        <a href="/check-score" class="text-white">Check Score</a>
+        <a href="/jobs" class="text-white">Jobs</a>
+        <a href="/profile" class="text-white">Profile</a>
+        <a href="/logout" class="text-white">Logout</a>
+      </div>
+    </nav>
+
+    <!-- Main Content Section -->
+    <div class="container mx-auto py-6">
+      {% block content %}
+      <!-- Content from child templates will go here -->
+      {% endblock %}
+    </div>
+
+    <!-- Floating Chatbot Button (OpenAI Icon) -->
+    <div id="chat-button" class="chat-button">
+      <!-- OpenAI Icon -->
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 32 32"
+        fill="none"
+        width="24"
+        height="24"
+      >
+        <path
+          fill="currentColor"
+          d="M26 5H6C4.9 5 4 5.9 4 7v18c0 1.1.9 2 2 2h20c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zM16 14c3.3 0 6-2.7 6-6s-2.7-6-6-6-6 2.7-6 6 2.7 6 6 6zM16 22c-4.4 0-8-3.6-8-8s3.6-8 8-8 8 3.6 8 8-3.6 8-8 8z"
+        />
+      </svg>
+    </div>
+
+    <!-- Chatbot Modal -->
+    <div id="chat-modal" class="chat-modal">
+      <div class="modal-content">
+        <div class="modal-header">Chat with AI</div>
+        <div class="modal-body">
+          <textarea id="chat-input" placeholder="Ask me anything..."></textarea>
+        </div>
+        <div class="modal-footer">
+          <button id="close-modal">Close</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Ensure your modal toggle JavaScript is working correctly
+
+      // Get elements
+      const chatButton = document.getElementById("chat-button");
+      const chatModal = document.getElementById("chat-modal");
+      const closeModalBtn = document.getElementById("close-modal");
+      const chatInput = document.getElementById("chat-input");
+
+      // Log to check if the script is running
+      console.log("Chatbot script loaded.");
+
+      // Open modal when the button is clicked
+      chatButton.addEventListener("click", () => {
+        console.log("Chatbot button clicked."); // Check if the button works
+        chatModal.classList.toggle("active");
+      });
+
+      // Close modal
+      closeModalBtn.addEventListener("click", () => {
+        chatModal.classList.remove("active");
+      });
+    </script>
+  </body>
+</html>

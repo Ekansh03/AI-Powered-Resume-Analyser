@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Resume Analyzer</title>
+    <!-- Link to Bootstrap CSS for styling -->
+    <link
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        background-color: #f4f7fc;
+        font-family: Arial, sans-serif;
+      }
+      .container {
+        margin-top: 50px;
+      }
+      .card {
+        border-radius: 10px;
+      }
+      .form-group {
+        margin-top: 20px;
+      }
+      .submit-btn {
+        background-color: #4caf50;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      .submit-btn:hover {
+        background-color: #45a049;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-md-8">
+          <div class="card shadow-lg">
+            <div class="card-body">
+              <h3 class="text-center">Upload Your Resume</h3>
+              <form
+                id="resume-form"
+                action="/analyze"
+                method="POST"
+                enctype="multipart/form-data"
+              >
+                <div class="form-group">
+                  <label for="resume">Select Resume (PDF only)</label>
+                  <input
+                    type="file"
+                    name="resume"
+                    class="form-control"
+                    id="resume"
+                    accept=".pdf"
+                    required
+                  />
+                </div>
+                <button type="submit" class="submit-btn btn-block">
+                  Analyze Resume
+                </button>
+              </form>
+              <div id="result" class="mt-4"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- jQuery, Bootstrap JS, and custom JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+      $(document).ready(function () {
+        $("#resume-form").on("submit", function (e) {
+          e.preventDefault();
+
+          var formData = new FormData(this);
+
+          $.ajax({
+            url: "/analyze",
+            type: "POST",
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (response) {
+              $("#result").html(
+                "<h5>Resume Analysis Result:</h5>" +
+                  "<pre>" +
+                  JSON.stringify(response, null, 4) +
+                  "</pre>"
+              );
+            },
+            error: function (error) {
+              $("#result").html(
+                '<div class="alert alert-danger">Error: ' +
+                  error.responseJSON.error +
+                  "</div>"
+              );
+            },
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
